@@ -6,12 +6,16 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
+ * @UniqueEntity("username")
+ * @UniqueEntity("email")
  */
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Id
@@ -37,6 +41,11 @@ class User implements UserInterface
      * @Assert\Email(message="Le format de l'adresse n'est pas correcte.")
      */
     private string $email;
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private array $roles = [];
 
     public function getId(): ?int
     {
@@ -79,12 +88,20 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return string[] The user roles
-     */
-    public function getRoles()
+    public function getRoles(): array
     {
-        return ['ROLE_USER'];
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 
     public function getSalt(): ?string
@@ -96,7 +113,7 @@ class User implements UserInterface
     {
     }
 
-    public function getUserIdentifier()
+    public function getUserIdentifier(): string
     {
         return $this->username;
     }

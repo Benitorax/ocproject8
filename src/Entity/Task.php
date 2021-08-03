@@ -40,6 +40,12 @@ class Task
      */
     private bool $isDone;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private User $user;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -63,7 +69,7 @@ class Task
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -75,7 +81,7 @@ class Task
         return $this;
     }
 
-    public function getContent(): ?string
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -92,8 +98,20 @@ class Task
         return $this->isDone;
     }
 
-    public function toggle($flag): void
+    public function toggle(bool $flag): void
     {
         $this->isDone = $flag;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }
