@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class TaskController extends AbstractController
 {
     /**
-     * @Route("/tasks", name="task_list")
+     * @Route("/tasks", name="app_task_list")
      */
     public function index(TaskRepository $repository): Response
     {
@@ -23,9 +23,9 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Route("/tasks/create", name="task_create")
+     * @Route("/tasks/create", name="app_task_create")
      */
-    public function createAction(Request $request): Response
+    public function create(Request $request): Response
     {
         $task = new Task();
         $form = $this->createForm(TaskType::class, $task);
@@ -47,9 +47,9 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Route("/tasks/{id}/edit", name="task_edit")
+     * @Route("/tasks/{id}/edit", name="app_task_edit")
      */
-    public function editAction(Task $task, Request $request): Response
+    public function edit(Task $task, Request $request): Response
     {
         $form = $this->createForm(TaskType::class, $task);
 
@@ -70,9 +70,9 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Route("/tasks/{id}/toggle", name="task_toggle")
+     * @Route("/tasks/{id}/toggle", name="app_task_toggle")
      */
-    public function toggleTaskAction(Task $task): Response
+    public function toggleTask(Task $task): Response
     {
         $task->toggle(!$task->isDone());
         $this->getDoctrine()->getManager()->flush();
@@ -83,9 +83,9 @@ class TaskController extends AbstractController
     }
 
     /**
-     * @Route("/tasks/{id}/delete", name="task_delete")
+     * @Route("/tasks/{id}/delete", name="app_task_delete")
      */
-    public function deleteTaskAction(Task $task): Response
+    public function deleteTask(Task $task): Response
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($task);
