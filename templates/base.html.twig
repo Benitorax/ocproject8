@@ -2,12 +2,16 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>{% block title %}To Do List app{% endblock %}</title>
         {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
         {% block stylesheets %}
             {#{{ encore_entry_link_tags('app') }}#}
-                    <!-- Bootstrap Core CSS -->
             <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
             <link href="{{ asset('css/shop-homepage.css') }}" rel="stylesheet">
         {% endblock %}
@@ -32,7 +36,9 @@
         <!-- Page Content -->
         <div class="container">
             <div class="row">
+                {% if is_granted('ROLE_ADMIN') %}
                 <a href="{{ path('app_user_create') }}" class="btn btn-primary">Créer un utilisateur</a>
+                {% endif %}
 
                 {% if app.user %}
                 <a href="{{ path('app_logout') }}" class="pull-right btn btn-danger">Se déconnecter</a>
