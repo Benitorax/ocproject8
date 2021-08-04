@@ -3,7 +3,6 @@
 namespace App\Security\Voter;
 
 use App\Entity\Task;
-use App\Entity\User;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -38,7 +37,9 @@ class TaskVoter extends Voter
                 return $this->canDelete($task, $user);
         }
 
+        // @codeCoverageIgnoreStart
         return false;
+        // @codeCoverageIgnoreEnd
     }
 
     private function canDelete(Task $task, UserInterface $user): bool
