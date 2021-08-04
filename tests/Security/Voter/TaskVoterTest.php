@@ -7,7 +7,6 @@ use App\Entity\User;
 use PHPUnit\Framework\TestCase;
 use App\Security\Voter\TaskVoter;
 use Symfony\Component\Security\Core\Authentication\Token\NullToken;
-use Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken;
 
 class TaskVoterTest extends TestCase
 {

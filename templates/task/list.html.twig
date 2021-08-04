@@ -3,12 +3,12 @@
 {% block header_img %}<img class="slide-image" src="{{ asset('img/todolist_content.jpg') }}" alt="todo list">{% endblock %}
 
 {% block body %}
-    <div class="row">
+    <div class="row" style="margin-bottom: 1rem">
         <a href="{{ path('app_task_create') }}" class="btn btn-info pull-right">Créer une tâche</a>
     </div>
     <div class="row">
         {% for task in tasks %}
-        <div class="col-sm-4 col-lg-4 col-md-4">
+        <div class="col-sm-4 col-lg-4 col-md-4" style="margin-bottom: 1rem">
             <div class="thumbnail">
                 <div class="caption">
                     <h4 class="pull-right">

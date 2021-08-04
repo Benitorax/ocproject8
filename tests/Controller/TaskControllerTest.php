@@ -19,6 +19,14 @@ class TaskControllerTest extends AppWebTestCase
         $client->loginUser($user);
         $client->request('GET', '/tasks');
         $this->assertResponseIsSuccessful();
+
+        // with query string tasks=todo
+        $client->request('GET', '/tasks?tasks=todo');
+        $this->assertResponseIsSuccessful();
+
+        // with query string tasks=done
+        $client->request('GET', '/tasks?tasks=done');
+        $this->assertResponseIsSuccessful();
     }
 
     public function testTaskCreate(): void
@@ -91,13 +99,13 @@ class TaskControllerTest extends AppWebTestCase
         $owner = $this->getUser('Rachel');
         $client->loginUser($owner);
         $client->request('GET', $toggleUrl);
-        $this->assertResponseRedirects('/tasks', 302);
+        $this->assertResponseRedirects(null, 302);
 
         // logged as Monica (not owner)
         $user = $this->getUser('Monica');
         $client->loginUser($user);
         $client->request('GET', $toggleUrl);
-        $this->assertResponseRedirects('/tasks', 302);
+        $this->assertResponseRedirects(null, 302);
     }
 
     public function testTaskDelete(): void

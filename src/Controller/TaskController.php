@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Task;
 use App\Entity\User;
 use App\Form\TaskType;
-use App\Repository\TaskRepository;
+use App\Service\TaskManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,10 +16,10 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks", name="app_task_list")
      */
-    public function index(TaskRepository $repository): Response
+    public function index(Request $request, TaskManager $manager): Response
     {
         return $this->render('task/list.html.twig', [
-            'tasks' => $repository->findAll(),
+            'tasks' => $manager->getAllTasks((string) $request->query->get('tasks')),
         ]);
     }
 
@@ -76,14 +76,14 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks/{id}/toggle", name="app_task_toggle")
      */
-    public function toggleTask(Task $task): Response
+    public function toggleTask(Task $task, Request $request): Response
     {
         $task->toggle(!$task->isDone());
         $this->getDoctrine()->getManager()->flush();
 
         $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
 
-        return $this->redirectToRoute('app_task_list');
+        return $this->redirect($request->server->get('HTTP_REFERER') ?: '/tasks');
     }
 
     /**

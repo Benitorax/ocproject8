@@ -47,4 +47,20 @@ class TaskRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+     * Return an array of tasks done or not done.
+     *
+     * @return Task[]
+     */
+    public function findAllTasks(bool $isDone)
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.isDone = :isDone')
+            ->setParameter('isDone', $isDone)
+            ->orderBy('t.createdAt', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
