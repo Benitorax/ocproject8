@@ -15,6 +15,8 @@ class TaskManager
     }
 
     /**
+     * Return an array of tasks from given filter.
+     *
      * @return Task[]
      */
     public function getAllTasks(?string $filter = null)
