@@ -27,7 +27,7 @@
                         <th scope="row">{{ loop.index }}</th>
                         <td>{{ user.username }}</td>
                         <td>{{ user.email }}</td>
-                        <td>{{ user.roles|first|slice(5)|capitalize }}</td>
+                        <td>{% if user.roles|first is same as('ROLE_ADMIN') %}Administrateur{% else %}Utilisateur{% endif %}</td>
                         <td>
                             <a href="{{ path('app_user_edit', {'id' : user.id}) }}" class="btn btn-success btn-sm">Editer</a>
                         </td>

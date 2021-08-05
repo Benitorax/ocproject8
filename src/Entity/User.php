@@ -43,6 +43,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $email;
 
     /**
+     * @Assert\Choice(choices={"ROLE_USER", "ROLE_ADMIN"}, multiple=true)
      * @ORM\Column(type="json")
      */
     private array $roles = [];

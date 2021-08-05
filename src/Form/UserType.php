@@ -38,6 +38,7 @@ class UserType extends AbstractType
                 ],
                 'label' => 'Rôle',
                 'attr'  =>  ['class' => 'form-control'],
+                'data' => [$options['data']->getRoles()[0]]
             ])
         ;
 
