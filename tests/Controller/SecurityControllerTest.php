@@ -16,7 +16,7 @@ class SecurityControllerTest extends AppWebTestCase
             'password' => '123456'
         ]);
 
-        $this->assertResponseRedirects('/tasks', 302);
+        $this->assertResponseRedirects('/', 302);
     }
 
     public function testLoginWithInvalidCredentials(): void
@@ -52,6 +52,6 @@ class SecurityControllerTest extends AppWebTestCase
         $user = $this->getUser('Ross');
         $client->loginUser($user);
         $client->request('GET', '/login');
-        $this->assertResponseRedirects('/tasks', 302);
+        $this->assertResponseRedirects('/', 302);
     }
 }
