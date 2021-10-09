@@ -7,26 +7,39 @@ use App\Entity\User;
 use App\DataFixtures\AppFixtures;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\Tools\SchemaTool;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class AppWebTestCase extends WebTestCase
 {
-    public function setUp(): void
+    public static function setUpBeforeClass(): void
     {
-        self::bootKernel();
-        $this->purgeDatabase();
-        $this->loadFixtures();
+        self::createClient();
+        self::initDatabase();
+        self::purgeDatabase();
+        self::loadFixtures();
         self::ensureKernelShutdown();
+    }
+
+    /**
+     * Create database schema.
+     */
+    private static function initDatabase(): void
+    {
+        $entityManager = self::getEntityManager();
+        $metaData = $entityManager->getMetadataFactory()->getAllMetadata();
+        $schemaTool = new SchemaTool($entityManager);
+        $schemaTool->updateSchema($metaData);
     }
 
     /**
      * Load fixtures.
      */
-    private function loadFixtures(): void
+    private static function loadFixtures(): void
     {
-        $this->getService(AppFixtures::class)->load($this->getEntityManager());
+        self::getService(AppFixtures::class)->load(self::getEntityManager());
     }
 
     /**
@@ -36,7 +49,7 @@ class AppWebTestCase extends WebTestCase
      * @param class-string<T> $id
      * @return T
      */
-    private function getService($id)
+    private static function getService($id)
     {
         /** @var T */
         return static::getContainer()->get((string) $id);
@@ -45,10 +58,10 @@ class AppWebTestCase extends WebTestCase
     /**
      * Return an entity manager.
      */
-    private function getEntityManager(): EntityManagerInterface
+    private static function getEntityManager(): EntityManagerInterface
     {
         /** @var EntityManagerInterface */
-        $entityManager = $this->getService(EntityManagerInterface::class);
+        $entityManager = self::getService(EntityManagerInterface::class);
 
         return $entityManager;
     }
@@ -56,19 +69,28 @@ class AppWebTestCase extends WebTestCase
     /**
      * Purge database.
      */
-    private function purgeDatabase(): void
+    private static function purgeDatabase(): void
     {
-        $purger = new ORMPurger($this->getEntityManager());
+        $purger = new ORMPurger(self::getEntityManager());
         $purger->purge();
     }
 
     /**
      * Return an User object from given username.
      */
-    public function getUser(string $username): User
+    public static function getUser(string $username): User
     {
         /** @var User */
-        return $this->getService(UserRepository::class)->findOneBy(['username' => $username]);
+        return self::getService(UserRepository::class)->findOneBy(['username' => $username]);
+    }
+
+    /**
+     * Return an admin User object.
+     */
+    public static function getAdminUser(): User
+    {
+        /** @var User */
+        return self::getService(UserRepository::class)->findOneAdmin();
     }
 
     /**
@@ -78,6 +100,6 @@ class AppWebTestCase extends WebTestCase
      */
     public function getTasksFromUser(User $user)
     {
-        return $this->getService(TaskRepository::class)->findBy(['user' => $user]);
+        return self::getService(TaskRepository::class)->findBy(['user' => $user]);
     }
 }

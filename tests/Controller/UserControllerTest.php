@@ -21,7 +21,7 @@ class UserControllerTest extends AppWebTestCase
         $this->assertResponseStatusCodeSame(403);
 
         // logged in as admin
-        $user = $this->getUser('Ross');
+        $user = $this->getAdminUser();
         $client->loginUser($user);
         $client->request('GET', '/users');
         $this->assertResponseIsSuccessful();
@@ -42,7 +42,7 @@ class UserControllerTest extends AppWebTestCase
         $this->assertResponseStatusCodeSame(403);
 
         // logged in as admin
-        $adminUser = $this->getUser('Ross');
+        $adminUser = $this->getAdminUser();
         $client->loginUser($adminUser);
         $client->request('GET', '/users/create');
         $client->submitForm('Ajouter', [
@@ -72,7 +72,7 @@ class UserControllerTest extends AppWebTestCase
         $this->assertResponseStatusCodeSame(403);
 
         // logged in as admin
-        $adminUser = $this->getUser('Ross');
+        $adminUser = $this->getAdminUser();
         $client->loginUser($adminUser);
         $client->request('GET', $editUrl);
         $client->submitForm('Modifier', [

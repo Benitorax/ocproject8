@@ -17,7 +17,7 @@ class DefaultControllerTest extends AppWebTestCase
     public function testHomepageWhenLoggedIn(): void
     {
         $client = static::createClient();
-        $user = $this->getUser('Ross');
+        $user = $this->getAdminUser();
         $client->loginUser($user);
         $client->request('GET', '/');
 

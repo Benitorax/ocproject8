@@ -15,7 +15,7 @@ class TaskControllerTest extends AppWebTestCase
         $this->assertResponseRedirects('/login', 302);
 
         // logged in
-        $user = $this->getUser('Ross');
+        $user = $this->getAdminUser();
         $client->loginUser($user);
         $client->request('GET', '/tasks');
         $this->assertResponseIsSuccessful();
@@ -38,7 +38,7 @@ class TaskControllerTest extends AppWebTestCase
         $this->assertResponseRedirects('/login', 302);
 
         // logged in
-        $user = $this->getUser('Ross');
+        $user = $this->getAdminUser();
         $client->loginUser($user);
         $client->request('GET', '/tasks/create');
         $client->submitForm('Ajouter', [
@@ -135,7 +135,7 @@ class TaskControllerTest extends AppWebTestCase
         $deleteUrl = '/tasks/' . $task->getId() . '/delete';
 
         // logged as admin
-        $user = $this->getUser('Ross');
+        $user = $this->getAdminUser();
         $client->loginUser($user);
         $client->request('POST', $deleteUrl);
         $this->assertResponseRedirects('/tasks', 302);

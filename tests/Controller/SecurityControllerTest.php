@@ -49,7 +49,7 @@ class SecurityControllerTest extends AppWebTestCase
     public function testLoginWhenAlreadyLoggedIn(): void
     {
         $client = static::createClient();
-        $user = $this->getUser('Ross');
+        $user = $this->getAdminUser();
         $client->loginUser($user);
         $client->request('GET', '/login');
         $this->assertResponseRedirects('/', 302);
