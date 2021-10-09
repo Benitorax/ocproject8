@@ -2,8 +2,10 @@
 
 namespace App\DataFixtures;
 
+use Faker\Factory;
 use App\Entity\Task;
 use App\Entity\User;
+use Faker\Generator;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -16,26 +18,28 @@ class AppFixtures extends Fixture
         ['Monica', '123456', 'monica@example.com', 'ROLE_USER'],
     ];
 
-    private array $users = [];
-
     private UserPasswordHasherInterface $passwordHasher;
+    private Generator $faker;
 
     public function __construct(UserPasswordHasherInterface $passwordHasher)
     {
         $this->passwordHasher = $passwordHasher;
+        $this->faker = Factory::create();
     }
 
     public function load(ObjectManager $manager): void
     {
+        $users = [];
+
         foreach (self::USERS_DATA as $userData) {
             $user = $this->loadUser($userData);
             $manager->persist($user);
-            $this->users[$user->getUsername()]['user'] = $user;
+            $users[] = $user;
+        }
 
-            for ($i = 0; $i < 3; $i++) {
-                $task = $this->loadTaskForUser($user, $i);
-                $manager->persist($task);
-            }
+        for ($i = 0; $i < 9; $i++) {
+            $task = $this->loadTask($users);
+            $manager->persist($task);
         }
 
 
@@ -59,13 +63,15 @@ class AppFixtures extends Fixture
 
     /**
      * Return a Task object from a given user.
+     *
+     * @param User[] $users
      */
-    public function loadTaskForUser(User $user, int $counter): Task
+    public function loadTask(array $users): Task
     {
         return (new Task())
-            ->setTitle('title' . $counter . ' of ' . $user->getUsername())
-            ->setContent('content' . $counter . ' of ' . $user->getUsername())
-            ->setUser($user)
+            ->setTitle($this->faker->realText(mt_rand(15, 40), 5))
+            ->setContent($this->faker->realText(mt_rand(60, 110), 5))
+            ->setUser($users[array_rand($users)])
         ;
     }
 }
