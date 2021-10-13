@@ -25,4 +25,3 @@ Feature:
         Then I should see "Se déconnecter"
         And I follow "Se déconnecter"
         Then I should see "Se connecter"
-
