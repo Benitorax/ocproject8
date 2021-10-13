@@ -11,3 +11,11 @@ default:
             sessions:
                 symfony:
                     symfony: ~
+                    
+            #configuration for Panther
+            javascript_session: panther
+            panther:
+                options:
+                    browser: 'chrome'
+        # declared for Panther
+        Robertfausk\Behat\PantherExtension: ~

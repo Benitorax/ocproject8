@@ -59,7 +59,43 @@ symfony serve -d
 -   [Twig](https://github.com/twigphp/Twig) for the template engine.
 -   [PHPUnit](https://github.com/sebastianbergmann/phpunit) to run tests.
 -   [Friends-of-Behat](https://github.com/FriendsOfBehat) to run tests with Behat.
+-   [DBrekelmans/BDI](https://github.com/dbrekelmans/bdi) to install a browser driver (ChromeDriver or GeckoDriver).
+-   [RobertFausk/Behat-Panther-Extension](https://github.com/robertfausk/behat-panther-extension) to use Panther with Behat.
 
 ## Clean code
 -   [PHPStan](https://github.com/phpstan/phpstan): level 8
 -   [PHPCS](https://github.com/squizlabs/PHP_CodeSniffer): PSR1 and PSR12
+
+## Tests
+### PHPUnit
+Run this command to test with coverage:
+```
+./vendor/bin/phpunit --coverage-html var/report-test --stop-on-failure
+``` 
+The report will be accessible at `/var/report-test/index.html`
+
+### Behat
+Run this command to test:
+```
+./vendor/bin/behat
+```
+
+#### With Panther
+Step 1: Run this command to install a browser driver:
+```
+./vendor/bin/bdi detect drivers
+```
+It will install GeckoDriver for Firefox or ChromeDriver for Chrome at directory `/drivers`.
+
+Step 2: Add `@javascript` above scenario code:
+```
+    @javascript
+    Scenario: Fail to login
+        When I am on "/login"
+        Then I should see "Login"
+```
+
+Step 3: Run Behat command
+```
+./vendor/bin/behat
+```
