@@ -58,6 +58,7 @@ symfony serve -d
 ## Third-party librairies
 -   [Twig](https://github.com/twigphp/Twig) for the template engine.
 -   [PHPUnit](https://github.com/sebastianbergmann/phpunit) to run tests.
+-   [Friends-of-Behat](https://github.com/FriendsOfBehat) to run tests with Behat.
 
 ## Clean code
 -   [PHPStan](https://github.com/phpstan/phpstan): level 8

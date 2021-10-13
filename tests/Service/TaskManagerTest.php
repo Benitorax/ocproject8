@@ -5,6 +5,7 @@ namespace App\Tests\Service;
 use App\Service\TaskManager;
 use App\Repository\TaskRepository;
 use App\Tests\Controller\AppWebTestCase;
+use Doctrine\ORM\EntityManagerInterface;
 
 class TaskManagerTest extends AppWebTestCase
 {
@@ -13,8 +14,9 @@ class TaskManagerTest extends AppWebTestCase
         self::bootKernel();
         $container = static::getContainer();
         $repository = $container->get(TaskRepository::class);
+        $entityManager = $container->get(EntityManagerInterface::class);
 
-        $manager = new TaskManager($repository);
+        $manager = new TaskManager($repository, $entityManager);
 
         // without query string
         $tasks = $manager->getAllTasks();

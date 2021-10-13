@@ -130,7 +130,7 @@ class TaskControllerTest extends AppWebTestCase
     public function testTaskDeleteWhenAdmin(): void
     {
         $client = static::createClient();
-        $owner = $this->getUser('Rachel');
+        $owner = $this->getUser('Monica');
         $task = $this->getTasksFromUser($owner)[0];
         $deleteUrl = '/tasks/' . $task->getId() . '/delete';
 
