@@ -23,3 +23,11 @@
 /.phpcs-cache
 /phpcs.xml
 ###< squizlabs/php_codesniffer ###
+
+###> friends-of-behat/symfony-extension ###
+/behat.yml
+###< friends-of-behat/symfony-extension ###
+
+###> dbrekelmans/bdi ###
+/drivers/
+###< dbrekelmans/bdi ###

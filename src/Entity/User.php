@@ -32,6 +32,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=64)
+     * @Assert\NotBlank(message="Vous devez saisir un mot de passe.")
      */
     private string $password;
 
@@ -43,6 +44,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $email;
 
     /**
+     * @Assert\Choice(choices={"ROLE_USER", "ROLE_ADMIN"}, multiple=true)
      * @ORM\Column(type="json")
      */
     private array $roles = [];

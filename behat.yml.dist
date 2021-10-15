@@ -1,0 +1,21 @@
+default:
+    suites:
+        default:
+            contexts:
+                - Behat\MinkExtension\Context\MinkContext
+                - App\Tests\Behat\FeatureContext
+    extensions:  
+        FriendsOfBehat\SymfonyExtension:
+            bootstrap: tests/bootstrap.php
+        Behat\MinkExtension:
+            sessions:
+                symfony:
+                    symfony: ~
+                    
+            #configuration for Panther
+            javascript_session: panther
+            panther:
+                options:
+                    browser: 'chrome'
+        # declared for Panther
+        Robertfausk\Behat\PantherExtension: ~

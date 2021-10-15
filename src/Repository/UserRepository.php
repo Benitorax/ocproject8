@@ -47,4 +47,15 @@ class UserRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findOneAdmin(): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.roles LIKE :val')
+            ->setParameter('val', '%ROLE_ADMIN%')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

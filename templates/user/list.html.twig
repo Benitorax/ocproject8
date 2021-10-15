@@ -6,8 +6,9 @@
 
 {% block body %}
     {% if users|length == 0 %}
-        <div class="alert alert-warning" role="alert">
-            Il n'y a pas encore d'utilisateur enregistré. <a href="{{ path('app_user_create') }}" class="btn btn-warning pull-right">Créer un utilisateur</a>
+        <div class="alert alert-warning" style="display: flex; justify-content: space-between" role="alert">
+            <span style="padding-bottom: 5px; padding-top: 5px">Il n'y a pas encore d'utilisateur enregistré.</span>
+            <span><a href="{{ path('app_user_create') }}" class="btn btn-warning">Créer un utilisateur</a></span>
         </div>
     {% else %}
         <div class="row">
@@ -17,6 +18,7 @@
                     <th>#</th>
                     <th>Nom d'utilisateur</th>
                     <th>Adresse d'utilisateur</th>
+                    <th>Rôle</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -26,8 +28,9 @@
                         <th scope="row">{{ loop.index }}</th>
                         <td>{{ user.username }}</td>
                         <td>{{ user.email }}</td>
+                        <td>{% if user.roles|first is same as('ROLE_ADMIN') %}Administrateur{% else %}Utilisateur{% endif %}</td>
                         <td>
-                            <a href="{{ path('app_user_edit', {'id' : user.id}) }}" class="btn btn-success btn-sm">Edit</a>
+                            <a href="{{ path('app_user_edit', {'id' : user.id}) }}" class="btn btn-success btn-sm">Editer</a>
                         </td>
                     </tr>
                 {% endfor %}
