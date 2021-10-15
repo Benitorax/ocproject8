@@ -14,8 +14,15 @@
                     <h4 class="pull-right">
                         {% if task.isDone %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}
                     </h4>
-                    <h4><a href="{{ path('app_task_edit', {'id' : task.id }) }}">{{ task.title }}</a></h4>
+                    <h4>
+                        {% if task.user is same as(app.user) or 'ROLE_ADMIN' in app.user.roles %}
+                            <a href="{{ path('app_task_edit', {'id' : task.id }) }}">{{ task.title }}</a>
+                        {% else %}
+                            {{ task.title }}
+                        {% endif %}
+                    </h4>
                     <p>{{ task.content }}</p>
+                    <p class="text-right" style="color: grey; margin-right: 1rem"><small>{{ task.user.username }}</small></p>
                 </div>
                 <div style="display: flex; justify-content: right; margin-bottom: 1rem; margin-right: 1rem">
                     <form action="{{ path('app_task_toggle', {'id' : task.id }) }}">

@@ -81,11 +81,7 @@ class TaskControllerTest extends AppWebTestCase
         $user = $this->getUser('Monica');
         $client->loginUser($user);
         $client->request('GET', $editUrl);
-        $client->submitForm('Modifier', [
-            'task[title]' => 'My task title',
-            'task[content]' => 'My task content'
-        ]);
-        $this->assertResponseRedirects('/tasks', 302);
+        $this->assertResponseStatusCodeSame(403);
     }
 
     public function testTaskToggle(): void

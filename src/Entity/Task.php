@@ -42,9 +42,9 @@ class Task
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
-    private User $user;
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -103,9 +103,13 @@ class Task
         $this->isDone = $flag;
     }
 
-    public function getUser(): User
+    public function getUser(): ?User
     {
-        return $this->user;
+        if (null !== $this->user) {
+            return $this->user;
+        }
+
+        return $this->user = (new User())->setUsername('Anonyme');
     }
 
     public function setUser(User $user): self

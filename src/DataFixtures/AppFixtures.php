@@ -29,19 +29,21 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $users = [];
-
         foreach (self::USERS_DATA as $userData) {
             $user = $this->loadUser($userData);
             $manager->persist($user);
-            $users[] = $user;
+
+            for ($i = 0; $i < 3; $i++) {
+                $task = $this->loadTask($user);
+                $manager->persist($task);
+            }
         }
 
-        for ($i = 0; $i < 9; $i++) {
-            $task = $this->loadTask($users);
+        // add tasks without user
+        for ($i = 0; $i < 2; $i++) {
+            $task = $this->loadTask();
             $manager->persist($task);
         }
-
 
         $manager->flush();
     }
@@ -64,14 +66,25 @@ class AppFixtures extends Fixture
     /**
      * Return a Task object from a given user.
      *
-     * @param User[] $users
+     * @param User|User[] $users
      */
-    public function loadTask(array $users): Task
+    public function loadTask($users = null): Task
     {
-        return (new Task())
+
+        $task = (new Task())
             ->setTitle($this->faker->realText(mt_rand(15, 40), 5))
             ->setContent($this->faker->realText(mt_rand(60, 110), 5))
-            ->setUser($users[array_rand($users)])
+            ->setCreatedAt(\DateTimeImmutable::createFromMutable($this->faker->dateTime()))
         ;
+
+        if ($users) {
+            if (is_array($users)) {
+                $users = $users[array_rand($users)];
+            }
+
+            $task->setUser($users);
+        }
+
+        return $task;
     }
 }

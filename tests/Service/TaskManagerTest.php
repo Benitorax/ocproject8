@@ -20,11 +20,11 @@ class TaskManagerTest extends AppWebTestCase
 
         // without query string
         $tasks = $manager->getAllTasks();
-        $this->assertSame(9, count($tasks));
+        $this->assertSame(11, count($tasks));
 
         // with query string tasks=todo
         $tasks = $manager->getAllTasks('todo');
-        $this->assertSame(9, count($tasks));
+        $this->assertSame(11, count($tasks));
 
         // with query string tasks=done
         $tasks = $manager->getAllTasks('done');

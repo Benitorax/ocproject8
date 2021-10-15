@@ -13,7 +13,7 @@ class TaskVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, ['delete'])
+        return in_array($attribute, ['delete', 'edit'])
             && $subject instanceof Task;
     }
 
@@ -35,6 +35,8 @@ class TaskVoter extends Voter
         switch ($attribute) {
             case 'delete':
                 return $this->canDelete($task, $user);
+            case 'edit':
+                return $this->canEdit($task, $user);
         }
 
         // @codeCoverageIgnoreStart
@@ -45,5 +47,10 @@ class TaskVoter extends Voter
     private function canDelete(Task $task, UserInterface $user): bool
     {
         return $user === $task->getUser();
+    }
+
+    private function canEdit(Task $task, UserInterface $user): bool
+    {
+        return $this->canDelete($task, $user);
     }
 }

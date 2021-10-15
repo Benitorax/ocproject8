@@ -23,7 +23,7 @@ body {
 }
 
 .caption {
-  height: 130px;
+  height: 150px;
   overflow: hidden;
 }
 
@@ -52,4 +52,13 @@ body {
 
 footer {
   margin: 50px 0;
+}
+
+.form-error-message {
+  color: red;
+}
+
+.form-error-icon {
+  color: white;
+  background-color: red;
 }
