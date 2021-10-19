@@ -10,35 +10,27 @@ use PHPUnit\Framework\Assert;
 use Behat\Behat\Context\Context;
 use Behat\Mink\Element\NodeElement;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class FeatureContext implements Context
 {
     private static KernelInterface $kernel;
     private Session $session;
-    private RouterInterface $router;
     private static UserPasswordHasherInterface $passwordHasher;
 
-    private static ?Response $response = null;
     private static ?ContainerInterface $container = null;
     private static ?EntityManagerInterface $entityManager = null;
 
     public function __construct(
         KernelInterface $kernel,
         Session $session,
-        RouterInterface $router,
         UserPasswordHasherInterface $passwordHasher
     ) {
         self::$kernel = $kernel;
         $this->session = $session;
-        $this->router = $router;
         self::$passwordHasher = $passwordHasher;
     }
 
