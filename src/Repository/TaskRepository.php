@@ -56,6 +56,8 @@ class TaskRepository extends ServiceEntityRepository
     public function findAllTasks(bool $isDone)
     {
         return $this->createQueryBuilder('t')
+            ->leftJoin('t.user', 'u')
+            ->addSelect('u')
             ->andWhere('t.isDone = :isDone')
             ->setParameter('isDone', $isDone)
             ->orderBy('t.createdAt', 'ASC')

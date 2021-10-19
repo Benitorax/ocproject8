@@ -50,4 +50,14 @@ class UserManager
         $password = $this->passwordHasher->hashPassword($user, $user->getPassword());
         $user->setPassword($password);
     }
+
+    /**
+     * Retrieve all users.
+     *
+     * @return User[]
+     */
+    public function getAllUsers()
+    {
+        return $this->repository->findAll();
+    }
 }
