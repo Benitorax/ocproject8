@@ -1,3 +1,5 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/d99ddc4df17948709d4b5f5fc628c9fd)](https://www.codacy.com/gh/Benitorax/ocproject8/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Benitorax/ocproject8&amp;utm_campaign=Badge_Grade)
+
 # Project as part of OpenClassrooms training
 
 The project is developed with Symfony, its components and bundles. The only allowed third-party librairies are for test, fixtures and quality code.
