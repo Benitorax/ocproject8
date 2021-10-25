@@ -116,8 +116,9 @@ class TaskControllerTest extends AppWebTestCase
         // logged as Monica (not owner)
         $anotherUser = $this->getUser('Monica');
         $client->loginUser($anotherUser);
+        $client->request('GET', '/tasks?tasks=todo');
         $client->request('GET', $toggleUrl);
-        $this->assertResponseRedirects(null, 302);
+        $this->assertResponseRedirects('/tasks?tasks=todo', 302);
     }
 
     public function testTaskDelete(): void
@@ -135,8 +136,9 @@ class TaskControllerTest extends AppWebTestCase
 
         // logged as owner
         $client->loginUser($owner);
+        $client->request('GET', '/tasks?tasks=done');
         $client->request('POST', $deleteUrl);
-        $this->assertResponseRedirects('/tasks', 302);
+        $this->assertResponseRedirects('/tasks?tasks=done', 302);
     }
 
     public function testTaskDeleteWhenAdmin(): void
