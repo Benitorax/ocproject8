@@ -1,4 +1,4 @@
-# Contribute to the project
+# Contributing to the project
 
 -   Step 1 - Check existing Issues and Pull Requests to avoid duplication.
 -   Step 2 - Clone the project with this command:
@@ -13,7 +13,7 @@ git clone git@github.com:Benitorax/ocproject8.git
 git checkout -b BRANCH_NAME dev
 ```
 
--   Step 6 - Clean your code with PHPStan and PHPCS command:
+-   Step 6 - Clean your code with PHPStan and PHPCS commands:
 ```false
 ./vendor/bin/phpcs
 ./vendor/bin/phpcbf
@@ -21,7 +21,7 @@ git checkout -b BRANCH_NAME dev
 ```
 Thanks to configuration files (phpcs.xml.dist and phpstan.neon.dist at the project root), you don't need to configure the rulesets and directories.
 
--   Step 7 - Make test to have at least 80% of coverage:
+-   Step 7 - Make test with PHPUnit and run the command below to have at least 90% of coverage:
 ```false
 ./vendor/bin/phpunit --coverage-html var/report-test/
 ```
