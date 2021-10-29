@@ -12,7 +12,11 @@
             <div class="thumbnail">
                 <div class="caption">
                     <h4 class="pull-right">
-                        {% if task.isDone %}<span class="glyphicon glyphicon-ok"></span>{% else %}<span class="glyphicon glyphicon-remove"></span>{% endif %}
+                        {% if task.isDone %}
+                            <span style="color: yellowgreen" class="glyphicon glyphicon-ok"></span>
+                        {% elseif task.isNotDoneAfterDeadline %}
+                            <span style="color: red" class="glyphicon glyphicon-exclamation-sign"></span>
+                        {% endif %}
                     </h4>
                     <h4>
                         {% if task.user is same as(app.user) or 'ROLE_ADMIN' in app.user.roles %}
@@ -22,10 +26,16 @@
                         {% endif %}
                     </h4>
                     <p>{{ task.content }}</p>
-                    <p class="text-right" style="color: grey; margin-right: 1rem"><small>{{ task.user.username }}</small></p>
+                    <p class="text-right" style="color: grey; margin-right: 1rem;">
+                        <small>
+                            {% if task.deadline %}Jusqu'au {{ task.deadline|date('d/m/Y') }}{% endif %}
+                        </small>
+                        <br>
+                        <small>{{ task.user.username }}</small>
+                    </p>
                 </div>
                 <div style="display: flex; justify-content: right; margin-bottom: 1rem; margin-right: 1rem">
-                    <form action="{{ path('app_task_toggle', {'id' : task.id }) }}">
+                    <form style="margin-right: 2px" action="{{ path('app_task_toggle', {'id' : task.id }) }}">
                         <button class="btn btn-success btn-sm">
                             {% if not task.isDone %}Marquer comme faite{% else %}Marquer non terminée{% endif %}
                         </button>

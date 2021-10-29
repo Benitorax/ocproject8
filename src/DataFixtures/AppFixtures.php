@@ -70,7 +70,6 @@ class AppFixtures extends Fixture
      */
     public function loadTask($users = null): Task
     {
-
         $task = (new Task())
             ->setTitle($this->faker->realText(mt_rand(15, 40), 5))
             ->setContent($this->faker->realText(mt_rand(60, 110), 5))
@@ -83,6 +82,9 @@ class AppFixtures extends Fixture
             }
 
             $task->setUser($users);
+            $task->setDeadline(\DateTimeImmutable::createFromMutable(
+                $this->faker->dateTimeBetween('yesterday', '6 months')
+            ));
         }
 
         return $task;

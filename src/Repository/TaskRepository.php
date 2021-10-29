@@ -68,7 +68,8 @@ class TaskRepository extends ServiceEntityRepository
         }
 
         return $query
-            ->orderBy('t.createdAt', 'ASC')
+            ->orderBy('t.deadline', 'ASC')
+            ->addOrderBy('t.createdAt', 'ASC')
             ->getQuery()
             ->getResult()
         ;
