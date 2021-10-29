@@ -35,9 +35,18 @@ class UserManager
 
     /**
      * Edit an user.
+     *
+     * If the password is not set, then set back the previous password.
      */
-    public function editUser(User $user): void
+    public function editUser(User $user, User $originalUser): void
     {
+        if (null === $user->getPassword()) {
+            $user->setPassword($originalUser->getPassword());
+            $this->entityManager->flush();
+
+            return;
+        }
+
         $this->hashPassword($user);
         $this->entityManager->flush();
     }
@@ -47,7 +56,7 @@ class UserManager
      */
     public function hashPassword(User $user): void
     {
-        $password = $this->passwordHasher->hashPassword($user, $user->getPassword());
+        $password = $this->passwordHasher->hashPassword($user, (string) $user->getPassword());
         $user->setPassword($password);
     }
 

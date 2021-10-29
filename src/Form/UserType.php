@@ -6,6 +6,7 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -24,9 +25,12 @@ class UserType extends AbstractType
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les deux mots de passe doivent correspondre.',
-                'required' => true,
                 'first_options'  => ['label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Tapez le mot de passe à nouveau'],
+                'required' => $options['edit_user'] ? false : true,
+                'constraints' => $options['edit_user'] ? [] : [
+                    new NotBlank([], 'Vous devez saisir un mot de passe.'),
+                ]
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Adresse email'
@@ -58,6 +62,7 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'edit_user' => false
         ]);
     }
 }

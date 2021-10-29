@@ -48,11 +48,12 @@ class UserController extends AbstractController
      */
     public function edit(User $user, Request $request, UserManager $manager): Response
     {
-        $form = $this->createForm(UserType::class, $user);
+        $originalUser = clone $user;
+        $form = $this->createForm(UserType::class, $user, ['edit_user' => true]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $manager->editUser($user);
+            $manager->editUser($user, $originalUser);
             $this->addFlash('success', "L'utilisateur a bien été modifié");
 
             return $this->redirectToRoute('app_user_list');

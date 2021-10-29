@@ -32,9 +32,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=64)
-     * @Assert\NotBlank(message="Vous devez saisir un mot de passe.")
      */
-    private string $password;
+    private ?string $password;
 
     /**
      * @ORM\Column(type="string", length=60, unique=true)
@@ -66,12 +65,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(?string $password): self
     {
         $this->password = $password;
 
