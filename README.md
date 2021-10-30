@@ -1,3 +1,5 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/d99ddc4df17948709d4b5f5fc628c9fd)](https://www.codacy.com/gh/Benitorax/ocproject8/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Benitorax/ocproject8&amp;utm_campaign=Badge_Grade)
+
 # Project as part of OpenClassrooms training
 
 The project is developed with Symfony, its components and bundles. The only allowed third-party librairies are for test, fixtures and quality code.
@@ -69,26 +71,26 @@ symfony serve -d
 ## Tests
 ### PHPUnit
 Run this command to test with coverage:
-```
+```false
 ./vendor/bin/phpunit --coverage-html var/report-test --stop-on-failure
 ``` 
 The report will be accessible at `/var/report-test/index.html`
 
 ### Behat
 Run this command to test:
-```
+```false
 ./vendor/bin/behat
 ```
 
 #### With Panther
 Step 1: Run this command to install a browser driver:
-```
+```false
 ./vendor/bin/bdi detect drivers
 ```
 It will install GeckoDriver for Firefox or ChromeDriver for Chrome at directory `/drivers`.
 
 Step 2: Add `@javascript` above scenario code:
-```
+```gherkin
     @javascript
     Scenario: Fail to login
         When I am on "/login"
@@ -96,6 +98,6 @@ Step 2: Add `@javascript` above scenario code:
 ```
 
 Step 3: Run Behat command
-```
+```false
 ./vendor/bin/behat
 ```

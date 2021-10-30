@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TaskRepository;
+use DateTime;
+use DateTimeImmutable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -45,6 +47,11 @@ class Task
      * @ORM\JoinColumn(nullable=true)
      */
     private ?User $user = null;
+
+    /**
+     * @ORM\Column(type="datetime_immutable", nullable=true)
+     */
+    private ?\DateTimeImmutable $deadline = null;
 
     public function __construct()
     {
@@ -117,5 +124,26 @@ class Task
         $this->user = $user;
 
         return $this;
+    }
+
+    public function getDeadline(): ?\DateTimeImmutable
+    {
+        return $this->deadline;
+    }
+
+    public function setDeadline(?\DateTimeImmutable $deadline): self
+    {
+        $this->deadline = $deadline;
+
+        return $this;
+    }
+
+    public function isNotDoneAfterDeadline(): bool
+    {
+        if (null === $this->deadline) {
+            return false;
+        }
+
+        return false === $this->isDone && $this->deadline < new \DateTimeImmutable('now');
     }
 }

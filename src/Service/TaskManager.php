@@ -31,7 +31,7 @@ class TaskManager
             case 'done':
                 return $this->repository->findAllTasks(true);
             default:
-                return $this->repository->findAll();
+                return $this->repository->findAllTasks();
         }
     }
 

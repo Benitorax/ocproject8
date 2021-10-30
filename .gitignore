@@ -31,3 +31,7 @@
 ###> dbrekelmans/bdi ###
 /drivers/
 ###< dbrekelmans/bdi ###
+
+###> blackfire ###
+blackfire.msi
+###< blackfire ###

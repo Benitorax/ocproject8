@@ -84,4 +84,22 @@ class UserControllerTest extends AppWebTestCase
         ]);
         $this->assertResponseRedirects('/users', 302);
     }
+
+    public function testUserEditWithoutPassword(): void
+    {
+        $client = static::createClient();
+        $user = $this->getUser('Phoebe');
+        $editUrl = '/users/' . $user->getId() . '/edit';
+
+        // logged in as admin
+        $adminUser = $this->getAdminUser();
+        $client->loginUser($adminUser);
+        $client->request('GET', $editUrl);
+        $client->submitForm('Modifier', [
+            'user[username]' => 'Phoebe',
+            'user[email]' => 'phoebe@example.com',
+            'user[roles]' => 'ROLE_ADMIN',
+        ]);
+        $this->assertResponseRedirects('/users', 302);
+    }
 }

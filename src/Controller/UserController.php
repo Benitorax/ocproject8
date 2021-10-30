@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
-use App\Repository\UserRepository;
 use App\Service\UserManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,10 +15,10 @@ class UserController extends AbstractController
     /**
      * @Route("/users", name="app_user_list")
      */
-    public function list(UserRepository $repository): Response
+    public function list(UserManager $manager): Response
     {
         return $this->render('user/list.html.twig', [
-            'users' => $repository->findAll()
+            'users' => $manager->getAllUsers()
         ]);
     }
 
@@ -49,11 +48,12 @@ class UserController extends AbstractController
      */
     public function edit(User $user, Request $request, UserManager $manager): Response
     {
-        $form = $this->createForm(UserType::class, $user);
+        $originalUser = clone $user;
+        $form = $this->createForm(UserType::class, $user, ['edit_user' => true]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $manager->editUser($user);
+            $manager->editUser($user, $originalUser);
             $this->addFlash('success', "L'utilisateur a bien été modifié");
 
             return $this->redirectToRoute('app_user_list');

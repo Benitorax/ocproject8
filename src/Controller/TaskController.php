@@ -6,12 +6,12 @@ use App\Entity\Task;
 use App\Entity\User;
 use App\Form\TaskType;
 use App\Service\TaskManager;
+use App\Controller\AppAbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class TaskController extends AbstractController
+class TaskController extends AppAbstractController
 {
     /**
      * @Route("/tasks", name="app_task_list")
@@ -79,19 +79,19 @@ class TaskController extends AbstractController
             $task->isDone() ? "terminée" : "non terminée"
         ));
 
-        return $this->redirect($request->server->get('HTTP_REFERER') ?: '/tasks');
+        return $this->redirectToTasksIndex($request);
     }
 
     /**
      * @Route("/tasks/{id}/delete", name="app_task_delete")
      */
-    public function deleteTask(Task $task, TaskManager $manager): Response
+    public function deleteTask(Task $task, Request $request, TaskManager $manager): Response
     {
         $this->denyAccessUnlessGranted('delete', $task);
 
         $manager->deleteTask($task);
         $this->addFlash('success', 'La tâche a bien été supprimée.');
 
-        return $this->redirectToRoute('app_task_list');
+        return $this->redirectToTasksIndex($request);
     }
 }

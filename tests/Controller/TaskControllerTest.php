@@ -68,7 +68,6 @@ class TaskControllerTest extends AppWebTestCase
         $editUrl = '/tasks/' . $task->getId() . '/edit';
 
         // logged as owner
-        $owner = $this->getUser('Rachel');
         $client->loginUser($owner);
         $client->request('GET', $editUrl);
         $client->submitForm('Modifier', [
@@ -78,10 +77,28 @@ class TaskControllerTest extends AppWebTestCase
         $this->assertResponseRedirects('/tasks', 302);
 
         // logged as Monica (not owner)
-        $user = $this->getUser('Monica');
-        $client->loginUser($user);
+        $anotherUser = $this->getUser('Monica');
+        $client->loginUser($anotherUser);
         $client->request('GET', $editUrl);
         $this->assertResponseStatusCodeSame(403);
+    }
+
+    public function testTaskEditWhenAdmin(): void
+    {
+        $client = static::createClient();
+        $owner = $this->getUser('Rachel');
+        $task = $this->getTasksFromUser($owner)[0];
+        $editUrl = '/tasks/' . $task->getId() . '/edit';
+
+        // logged as admin
+        $admin = $this->getUser('Ross');
+        $client->loginUser($admin);
+        $client->request('GET', $editUrl);
+        $client->submitForm('Modifier', [
+            'task[title]' => 'My task title for admin',
+            'task[content]' => 'My task content for admin'
+        ]);
+        $this->assertResponseRedirects('/tasks', 302);
     }
 
     public function testTaskToggle(): void
@@ -92,16 +109,16 @@ class TaskControllerTest extends AppWebTestCase
         $toggleUrl = '/tasks/' . $task->getId() . '/toggle';
 
         // logged as owner
-        $owner = $this->getUser('Rachel');
         $client->loginUser($owner);
         $client->request('GET', $toggleUrl);
         $this->assertResponseRedirects(null, 302);
 
         // logged as Monica (not owner)
-        $user = $this->getUser('Monica');
-        $client->loginUser($user);
+        $anotherUser = $this->getUser('Monica');
+        $client->loginUser($anotherUser);
+        $client->request('GET', '/tasks?tasks=todo');
         $client->request('GET', $toggleUrl);
-        $this->assertResponseRedirects(null, 302);
+        $this->assertResponseRedirects('/tasks?tasks=todo', 302);
     }
 
     public function testTaskDelete(): void
@@ -119,8 +136,9 @@ class TaskControllerTest extends AppWebTestCase
 
         // logged as owner
         $client->loginUser($owner);
+        $client->request('GET', '/tasks?tasks=done');
         $client->request('POST', $deleteUrl);
-        $this->assertResponseRedirects('/tasks', 302);
+        $this->assertResponseRedirects('/tasks?tasks=done', 302);
     }
 
     public function testTaskDeleteWhenAdmin(): void

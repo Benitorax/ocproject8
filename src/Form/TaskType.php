@@ -6,6 +6,7 @@ use App\Entity\Task;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TaskType extends AbstractType
@@ -18,6 +19,12 @@ class TaskType extends AbstractType
             ])
             ->add('content', TextType::class, [
                 'label' => "Contenu"
+            ])
+            ->add('deadline', DateType::class, [
+                'label' => "Date d'échéance",
+                'widget' => 'single_text',
+                'input'  => 'datetime_immutable',
+                'required' => false
             ])
         ;
     }
